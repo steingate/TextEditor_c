@@ -1,0 +1,1 @@
+void MouseProjectProcess(int x,int y,int button,int event);
