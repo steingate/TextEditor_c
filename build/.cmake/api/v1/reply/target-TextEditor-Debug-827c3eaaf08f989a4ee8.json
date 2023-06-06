@@ -50,7 +50,7 @@
 				"role" : "libraries"
 			}
 		],
-		"language" : "C"
+		"language" : "CXX"
 	},
 	"name" : "TextEditor",
 	"nameOnDisk" : "TextEditor.exe",
