@@ -1,0 +1,8 @@
+[
+{
+  "directory": "D:/TextEditor_C/build",
+  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe  @CMakeFiles/TextEditor_c.dir/includes_C.rsp -g -o CMakeFiles\\TextEditor_c.dir\\project.c.obj -c D:\\TextEditor_C\\project.c",
+  "file": "D:/TextEditor_C/project.c",
+  "output": "CMakeFiles/TextEditor_c.dir/project.c.obj"
+}
+]

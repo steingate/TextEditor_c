@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.1)
+project(TextEditor_C)
+include_directories("D:/TextEditor_C/includefiles")
+aux_source_directory("D:/TextEditor_C/src" src)
+add_executable(TextEditor src)
+SET_TARGET_PROPERTIES(TextEditor PROPERTIES LINKER_LANGUAGE C)
