@@ -26,7 +26,7 @@ void StandardTextBox(int NOL){//NOL: Number of Lines
     int fillflag=0;
     setTextBoxColors(frame,label,hotframe,hotlabel,fillflag);
     IdOfTextBox[NOL]=GenUIID(NOL);
-    textbox(IdOfTextBox[NOL],0,StartYOfTextBox-NOL*StandardHeightOfTextBox,
+    textbox_ver_syx(IdOfTextBox[NOL],0,StartYOfTextBox-NOL*StandardHeightOfTextBox,
     Window_Width,StandardHeightOfTextBox,Content[NOL],maxn);
     return;
 }

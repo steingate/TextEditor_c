@@ -48,6 +48,7 @@
 #include "display.h"
 extern IdOfTextBox[720];
 extern double StartYOfTextBox,StandardHeightOfTextBox;
+int CurrentLocation=-1;
 /*This is the end line of my own code*/
 
 /* 鼠标和空间状态 */
@@ -510,12 +511,14 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 	char * frameColor = gs_textbox_color.frame;
 	char * labelColor = gs_textbox_color.label;
 	int textChanged = 0;
-	//
-	int NOL=(int)((StartYOfTextBox-y)/StandardHeightOfTextBox);
-	//
 	int len = strlen(textbuf);
 	double indent = GetFontAscent()/2;
 	double textPosY = y+h/2-GetFontAscent()/2;
+	//
+	int NOL=(int)((StartYOfTextBox-y)/StandardHeightOfTextBox);
+	if(CurrentLocation<0) CurrentLocation=len;
+	//
+
 
 	if (notInMenu(gs_UIState.mousex, gs_UIState.mousey) &&
 		inBox(gs_UIState.mousex, gs_UIState.mousey, x, x + w, y, y + h) ) 
@@ -542,12 +545,15 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 	mySetPenColor(labelColor);
 	MovePen(x+indent, textPosY);
 	DrawTextString(textbuf);
+	
+	//配合向左or向右移动光标 by syx{
 	// add cursor if we have keyboard focus
-	if ( gs_UIState.kbdItem == id && (clock() >> 8) & 1) 
+	if ( gs_UIState.kbdItem == id && ((clock() >> 8) & 1) && CurrentLocation==len) 
 	{
 		//MovePen(x+indent+TextStringWidth(textbuf), textPosY);
 		DrawTextString("_");
 	}
+	//}
 
 	// If we have keyboard focus, we'll need to process the keys
 	if ( gs_UIState.kbdItem == id )
@@ -563,6 +569,9 @@ int textbox(int id, double x, double y, double w, double h, char textbuf[], int 
 		case VK_UP:
 			gs_UIState.kbdItem=IdOfTextBox[NOL-1];
 			gs_UIState.keyPress = 0;
+			break;
+		case VK_LEFT:
+			
 			break;
 		/*This is the end line of my own code*/	
 		case VK_RETURN:
@@ -646,4 +655,137 @@ void drawLabel(double x, double y, char *label)
 		MovePen(x,y);
 		DrawTextString(label);
 	}
+}
+
+int textbox_ver_syx(int id, double x, double y, double w, double h, char textbuf[], int buflen)
+{
+	char * frameColor = gs_textbox_color.frame;
+	char * labelColor = gs_textbox_color.label;
+	int textChanged = 0;
+	int len = strlen(textbuf);
+	double indent = GetFontAscent()/2;
+	double textPosY = y+h/2-GetFontAscent()/2;
+	//
+	int NOL=(int)((StartYOfTextBox-y)/StandardHeightOfTextBox);
+	if(CurrentLocation<0) CurrentLocation=len-1;
+	x=0;
+	//
+
+
+	if (notInMenu(gs_UIState.mousex, gs_UIState.mousey) &&
+		inBox(gs_UIState.mousex, gs_UIState.mousey, x, x + w, y, y + h) ) 
+	{
+		frameColor = gs_textbox_color.hotFrame;
+		labelColor = gs_textbox_color.hotLabel;
+		gs_UIState.actingMenu = 0; // menu lose focus
+		if ( gs_UIState.mousedown) {
+			gs_UIState.clickedItem = id;
+		}
+	}
+
+	// If no widget has keyboard focus, take it
+	if (gs_UIState.kbdItem == 0)
+		gs_UIState.kbdItem = id;
+
+	if (gs_UIState.kbdItem == id)
+		labelColor = gs_textbox_color.hotLabel;
+
+	// Render the text box
+	mySetPenColor(frameColor);
+	drawRectangle(x, y, w, h, gs_textbox_color.fillflag);
+	//用于复制textbuf by syx
+	char TextStringToPresent[1025];int i;
+	for ( i = 0; i <= len; i++)
+	{
+		if (i==CurrentLocation&&gs_UIState.kbdItem == id)
+		{
+			TextStringToPresent[i]='_';
+		} else
+		{
+			TextStringToPresent[i]=textbuf[i];
+		}
+	}
+	//
+	// show text
+	mySetPenColor(labelColor);
+	MovePen(x+indent, textPosY);
+	DrawTextString(TextStringToPresent);
+	
+	/*配合向左or向右移动光标 by syx{
+	// add cursor if we have keyboard focus
+	if ( gs_UIState.kbdItem == id && ((clock() >> 8) & 1) ) 
+	{
+		//MovePen(x+indent+TextStringWidth(textbuf), textPosY);
+		DrawTextString("_");
+	}
+	*/
+
+	// If we have keyboard focus, we'll need to process the keys
+	if( gs_UIState.kbdItem == id )
+	{
+		switch (gs_UIState.keyPress)
+		{
+
+		/*This is the start line of my own code*/
+		case VK_DOWN:
+			gs_UIState.kbdItem = 0;
+			gs_UIState.keyPress = 0;
+			break;
+		case VK_UP:
+			gs_UIState.kbdItem=IdOfTextBox[NOL-1];
+			gs_UIState.keyPress = 0;
+			break;
+		case VK_LEFT:
+			CurrentLocation--;
+			break;
+		case VK_RIGHT:
+			CurrentLocation=(CurrentLocation+1)<len?CurrentLocation+1:len;
+			break;
+		case VK_RETURN:
+			gs_UIState.kbdItem = 0;
+			gs_UIState.keyPress = 0;
+			CurrentLocation=-1;
+			break;
+		/*This is the end line of my own code*/	
+
+		case VK_TAB:
+			// lose keyboard focus.
+			gs_UIState.kbdItem = 0;
+			// If shift was also pressed, we want to move focus
+			// to the previous widget instead.
+			if ( gs_UIState.keyModifiers & KMOD_SHIFT )
+				gs_UIState.kbdItem = gs_UIState.lastItem;
+			// Also clear the key so that next widget won't process it
+			gs_UIState.keyPress = 0;
+			break;
+		case VK_BACK:
+			if( len > 0 ) {
+				int i;
+				
+				textbuf[len] = 0;
+				CurrentLocation--;
+				textChanged = 1;
+			}
+			//gs_UIState.keyPress = 0;
+			break;
+		}
+		// char input
+		if (gs_UIState.charInput >= 32 && gs_UIState.charInput < 127 && len+1 < buflen ) {
+			textbuf[len] = gs_UIState.charInput;
+			textbuf[++len] = 0;
+			gs_UIState.charInput = 0;
+			textChanged = 1;
+		}
+	}
+
+	gs_UIState.lastItem = id;
+
+	if( gs_UIState.clickedItem==id && // must be clicked before
+		! gs_UIState.mousedown )     // but now mouse button is up
+	{
+		gs_UIState.clickedItem = 0;
+		gs_UIState.kbdItem = id;
+	}
+
+	return textChanged;
 }
