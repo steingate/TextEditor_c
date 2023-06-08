@@ -1,0 +1,64 @@
+# Project: project
+# Makefile created by Embarcadero Dev-C++ 6.3
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = src/display.o src/exceptio.o src/genlib.o src/graphics.o src/imgui.o src/keyboard.o src/linkedlist.o src/main.o src/mouse.o src/random.o src/simpio.o src/strlib.o src/uichar.o
+LINKOBJ  = src/display.o src/exceptio.o src/genlib.o src/graphics.o src/imgui.o src/keyboard.o src/linkedlist.o src/main.o src/mouse.o src/random.o src/simpio.o src/strlib.o src/uichar.o
+LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
+INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/TextEditor_C/includefiles"
+CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++" -I"D:/TextEditor_C/includefiles"
+BIN      = project.exe
+CXXFLAGS = $(CXXINCS) -g3
+CFLAGS   = $(INCS) -g3
+DEL      = C:\Program Files (x86)\Embarcadero\Dev-Cpp\devcpp.exe INTERNAL_DEL
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${DEL} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+src/display.o: src/display.c
+	$(CC) -c src/display.c -o src/display.o $(CFLAGS)
+
+src/exceptio.o: src/exceptio.c
+	$(CC) -c src/exceptio.c -o src/exceptio.o $(CFLAGS)
+
+src/genlib.o: src/genlib.c
+	$(CC) -c src/genlib.c -o src/genlib.o $(CFLAGS)
+
+src/graphics.o: src/graphics.c
+	$(CC) -c src/graphics.c -o src/graphics.o $(CFLAGS)
+
+src/imgui.o: src/imgui.c
+	$(CC) -c src/imgui.c -o src/imgui.o $(CFLAGS)
+
+src/keyboard.o: src/keyboard.c
+	$(CC) -c src/keyboard.c -o src/keyboard.o $(CFLAGS)
+
+src/linkedlist.o: src/linkedlist.c
+	$(CC) -c src/linkedlist.c -o src/linkedlist.o $(CFLAGS)
+
+src/main.o: src/main.c
+	$(CC) -c src/main.c -o src/main.o $(CFLAGS)
+
+src/mouse.o: src/mouse.c
+	$(CC) -c src/mouse.c -o src/mouse.o $(CFLAGS)
+
+src/random.o: src/random.c
+	$(CC) -c src/random.c -o src/random.o $(CFLAGS)
+
+src/simpio.o: src/simpio.c
+	$(CC) -c src/simpio.c -o src/simpio.o $(CFLAGS)
+
+src/strlib.o: src/strlib.c
+	$(CC) -c src/strlib.c -o src/strlib.o $(CFLAGS)
+
+src/uichar.o: src/uichar.c
+	$(CC) -c src/uichar.c -o src/uichar.o $(CFLAGS)

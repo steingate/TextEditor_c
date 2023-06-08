@@ -3,17 +3,18 @@
 #include "imgui.h"
 #include "mouse.h"
 #include "display.h"
+#include "ds.h"
 
 double Window_Height,Window_Width;
 double HeightForButton=0.3,WidthForButton=0.5;
 double HeightForTextbox=5;
-extern double StartYOfTextBox,StandardHeightOfTextBox;
+double StartYOfTextBox,StandardHeightOfTextBox;
 char *FileLabels[]={"File","New","Save","Save As","Close","Halt"};
 char *EditLabels[]={"Edit","Copy","Paste","Recover","Redo"};
 char *HelpLabels[]={"Help","Manul","About"};
 static char Content[720][1024]={"0","GGGGGGGGGG"};
 int maxn=1024;
-extern int IdOfTextBox[720];
+int IdOfTextBox[720];
 
 void Initial();
 void Menulists();
@@ -21,7 +22,7 @@ void Textbox();
 void StandardTextBox(int NOL);
 
 void StandardTextBox(int NOL){//NOL: Number of Lines
-    char frame[5]={"blue"},label[5]={"blue"},hotframe[5]={"blue"},
+    char frame[5]={"white"},label[5]={"blue"},hotframe[5]={"blue"},
         hotlabel[5]={"red"};
     int fillflag=0;
     setTextBoxColors(frame,label,hotframe,hotlabel,fillflag);

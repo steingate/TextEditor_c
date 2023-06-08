@@ -736,10 +736,10 @@ int textbox_ver_syx(int id, double x, double y, double w, double h, char textbuf
 			gs_UIState.keyPress = 0;
 			break;
 		case VK_LEFT:
-			CurrentLocation--;
+			CurrentLocation=(CurrentLocation-1)<0?0:CurrentLocation-1;
 			break;
 		case VK_RIGHT:
-			CurrentLocation=(CurrentLocation+1)<len?CurrentLocation+1:len;
+			CurrentLocation=(CurrentLocation+1)<len?CurrentLocation+1:len-1;
 			break;
 		case VK_RETURN:
 			gs_UIState.kbdItem = 0;
@@ -773,6 +773,7 @@ int textbox_ver_syx(int id, double x, double y, double w, double h, char textbuf
 		if (gs_UIState.charInput >= 32 && gs_UIState.charInput < 127 && len+1 < buflen ) {
 			textbuf[len] = gs_UIState.charInput;
 			textbuf[++len] = 0;
+			CurrentLocation=len-1;
 			gs_UIState.charInput = 0;
 			textChanged = 1;
 		}
