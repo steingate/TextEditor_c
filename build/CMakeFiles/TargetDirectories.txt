@@ -1,3 +1,0 @@
-D:/TextEditor_C/build/CMakeFiles/TextEditor.dir
-D:/TextEditor_C/build/CMakeFiles/edit_cache.dir
-D:/TextEditor_C/build/CMakeFiles/rebuild_cache.dir

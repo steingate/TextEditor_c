@@ -5,6 +5,7 @@
 #include "keyboard.h"
 #include "display.h"
 #include "uichar.h"
+#include <Windows.h>
 
 void Main()
 {
