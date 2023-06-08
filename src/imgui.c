@@ -39,6 +39,7 @@
 #include <time.h>
 
 #include "imgui.h"
+#include "ds.h"
 
 
 #define KMOD_SHIFT 0x01
@@ -657,12 +658,12 @@ void drawLabel(double x, double y, char *label)
 	}
 }
 
-int textbox_ver_syx(int id, double x, double y, double w, double h, char textbuf[], int buflen)
+int textbox_ver_syx(int id, double x, double y, double w, double h, texture Texture_OF_Line, int buflen)
 {
 	char * frameColor = gs_textbox_color.frame;
 	char * labelColor = gs_textbox_color.label;
 	int textChanged = 0;
-	int len = strlen(textbuf);
+	int len = texture_length(Texture_OF_Line);
 	double indent = GetFontAscent()/2;
 	double textPosY = y+h/2-GetFontAscent()/2;
 	//
@@ -693,23 +694,12 @@ int textbox_ver_syx(int id, double x, double y, double w, double h, char textbuf
 	// Render the text box
 	mySetPenColor(frameColor);
 	drawRectangle(x, y, w, h, gs_textbox_color.fillflag);
-	//用于复制textbuf by syx
-	char TextStringToPresent[1025];int i;
-	for ( i = 0; i <= len; i++)
-	{
-		if (i==CurrentLocation&&gs_UIState.kbdItem == id)
-		{
-			TextStringToPresent[i]='_';
-		} else
-		{
-			TextStringToPresent[i]=textbuf[i];
-		}
-	}
-	//
 	// show text
 	mySetPenColor(labelColor);
 	MovePen(x+indent, textPosY);
-	DrawTextString(TextStringToPresent);
+	char textbuf[1024];
+	texture_copy(Texture_OF_Line,textbuf);
+	DrawTextString(textbuf);
 	
 	/*配合向左or向右移动光标 by syx{
 	// add cursor if we have keyboard focus
@@ -761,7 +751,6 @@ int textbox_ver_syx(int id, double x, double y, double w, double h, char textbuf
 		case VK_BACK:
 			if( len > 0 ) {
 				int i;
-				
 				textbuf[len] = 0;
 				CurrentLocation--;
 				textChanged = 1;

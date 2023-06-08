@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = src/display.o src/exceptio.o src/genlib.o src/graphics.o src/imgui.o src/keyboard.o src/linkedlist.o src/main.o src/mouse.o src/random.o src/simpio.o src/strlib.o src/uichar.o
-LINKOBJ  = src/display.o src/exceptio.o src/genlib.o src/graphics.o src/imgui.o src/keyboard.o src/linkedlist.o src/main.o src/mouse.o src/random.o src/simpio.o src/strlib.o src/uichar.o
+OBJ      = src/display.o src/exceptio.o src/genlib.o src/graphics.o src/imgui.o src/keyboard.o src/linkedlist.o src/main.o src/mouse.o src/random.o src/simpio.o src/strlib.o src/uichar.o src/ds.o
+LINKOBJ  = src/display.o src/exceptio.o src/genlib.o src/graphics.o src/imgui.o src/keyboard.o src/linkedlist.o src/main.o src/mouse.o src/random.o src/simpio.o src/strlib.o src/uichar.o src/ds.o
 LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/TextEditor_C/includefiles"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++" -I"D:/TextEditor_C/includefiles"
@@ -62,3 +62,6 @@ src/strlib.o: src/strlib.c
 
 src/uichar.o: src/uichar.c
 	$(CC) -c src/uichar.c -o src/uichar.o $(CFLAGS)
+
+src/ds.o: src/ds.c
+	$(CC) -c src/ds.c -o src/ds.o $(CFLAGS)

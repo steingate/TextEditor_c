@@ -15,6 +15,7 @@ char *HelpLabels[]={"Help","Manul","About"};
 static char Content[720][1024]={"0","GGGGGGGGGG"};
 int maxn=1024;
 int IdOfTextBox[720];
+extern texture text[720];
 
 void Initial();
 void Menulists();
@@ -28,7 +29,7 @@ void StandardTextBox(int NOL){//NOL: Number of Lines
     setTextBoxColors(frame,label,hotframe,hotlabel,fillflag);
     IdOfTextBox[NOL]=GenUIID(NOL);
     textbox_ver_syx(IdOfTextBox[NOL],0,StartYOfTextBox-NOL*StandardHeightOfTextBox,
-    Window_Width,StandardHeightOfTextBox,Content[NOL],maxn);
+    Window_Width,StandardHeightOfTextBox,text[NOL],maxn);
     return;
 }
 
