@@ -163,7 +163,9 @@ void drawMenuBar(double x, double y, double w, double h);
  *   0 - 文本没有被编辑
  *   1 - 被编辑了
  */
+#include "ds.h"
 int textbox(int id, double x, double y, double w, double h, char textbuf[], int buflen);
+int textbox_ver_syx(int id, double x, double y, double w, double h, texture *Texture_OF_Line, int buflen);
 
 /*
  * 设置控件的颜色

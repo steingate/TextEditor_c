@@ -14,6 +14,7 @@ void Main()
     registerMouseEvent(MouseProjectProcess);
     registerKeyboardEvent(KeyboardEventProcess);
     registerCharEvent(CharEventProcess);
+    Display_Init();
     Display();
     return;
 }

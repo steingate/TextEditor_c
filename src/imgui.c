@@ -47,7 +47,7 @@
 
 /*This is the Start line of my own code*/
 #include "display.h"
-extern IdOfTextBox[720];
+extern int IdOfTextBox[720];
 extern double StartYOfTextBox,StandardHeightOfTextBox;
 int CurrentLocation=-1;
 /*This is the end line of my own code*/
@@ -658,7 +658,7 @@ void drawLabel(double x, double y, char *label)
 	}
 }
 
-int textbox_ver_syx(int id, double x, double y, double w, double h, texture Texture_OF_Line, int buflen)
+int textbox_ver_syx(int id, double x, double y, double w, double h, texture *Texture_OF_Line, int buflen)
 {
 	char * frameColor = gs_textbox_color.frame;
 	char * labelColor = gs_textbox_color.label;
@@ -699,6 +699,17 @@ int textbox_ver_syx(int id, double x, double y, double w, double h, texture Text
 	MovePen(x+indent, textPosY);
 	char textbuf[1024];
 	texture_copy(Texture_OF_Line,textbuf);
+	for (int i = len-1; i >= 0; i--)
+	{
+		if (i>=CurrentLocation)
+		{
+			textbuf[i+1]=textbuf[i];
+			if (i==CurrentLocation)
+			{
+				textbuf[i]='_';
+			}
+		}
+	}
 	DrawTextString(textbuf);
 	
 	/*配合向左or向右移动光标 by syx{
@@ -715,54 +726,49 @@ int textbox_ver_syx(int id, double x, double y, double w, double h, texture Text
 	{
 		switch (gs_UIState.keyPress)
 		{
-
-		/*This is the start line of my own code*/
-		case VK_DOWN:
-			gs_UIState.kbdItem = 0;
-			gs_UIState.keyPress = 0;
-			break;
-		case VK_UP:
-			gs_UIState.kbdItem=IdOfTextBox[NOL-1];
-			gs_UIState.keyPress = 0;
-			break;
-		case VK_LEFT:
-			CurrentLocation=(CurrentLocation-1)<0?0:CurrentLocation-1;
-			break;
-		case VK_RIGHT:
-			CurrentLocation=(CurrentLocation+1)<len?CurrentLocation+1:len-1;
-			break;
-		case VK_RETURN:
-			gs_UIState.kbdItem = 0;
-			gs_UIState.keyPress = 0;
-			CurrentLocation=-1;
-			break;
-		/*This is the end line of my own code*/	
-
-		case VK_TAB:
-			// lose keyboard focus.
-			gs_UIState.kbdItem = 0;
-			// If shift was also pressed, we want to move focus
-			// to the previous widget instead.
-			if ( gs_UIState.keyModifiers & KMOD_SHIFT )
-				gs_UIState.kbdItem = gs_UIState.lastItem;
-			// Also clear the key so that next widget won't process it
-			gs_UIState.keyPress = 0;
-			break;
-		case VK_BACK:
-			if( len > 0 ) {
-				int i;
-				textbuf[len] = 0;
-				CurrentLocation--;
-				textChanged = 1;
-			}
-			//gs_UIState.keyPress = 0;
-			break;
+			case VK_DOWN:
+				gs_UIState.kbdItem = 0;
+				gs_UIState.keyPress = 0;
+				break;
+			case VK_UP:
+				gs_UIState.kbdItem=IdOfTextBox[NOL-1];
+				gs_UIState.keyPress = 0;
+				break;
+			case VK_LEFT:
+				CurrentLocation=(CurrentLocation-1)<0?0:CurrentLocation-1;
+				break;
+			case VK_RIGHT:
+				CurrentLocation=(CurrentLocation+1)<len?CurrentLocation+1:len-1;
+				break;
+			case VK_RETURN:
+				gs_UIState.kbdItem = 0;
+				gs_UIState.keyPress = 0;
+				CurrentLocation=-1;
+				break;
+			case VK_TAB:
+				// lose keyboard focus...y
+				gs_UIState.kbdItem = 0;
+				// If shift was also pressed, we want to move focus
+				// to the previous widget instead.
+				if ( gs_UIState.keyModifiers & KMOD_SHIFT )
+					gs_UIState.kbdItem = gs_UIState.lastItem;
+				// Also clear the key so that next widget won't process it
+				gs_UIState.keyPress = 0;
+				break;
+			case VK_BACK:
+				if( len > 0 ) {
+					texture_delete(Texture_OF_Line,CurrentLocation-1);
+					CurrentLocation=(CurrentLocation-1)<0?0:CurrentLocation-1;
+					textChanged = 1;
+				}
+				//gs_UIState.keyPress = 0;
+				break;
 		}
 		// char input
 		if (gs_UIState.charInput >= 32 && gs_UIState.charInput < 127 && len+1 < buflen ) {
-			textbuf[len] = gs_UIState.charInput;
-			textbuf[++len] = 0;
-			CurrentLocation=len-1;
+			char temp=gs_UIState.charInput;
+			texture_add(Texture_OF_Line,CurrentLocation,temp);
+			CurrentLocation=(CurrentLocation+1)<(len+1)?CurrentLocation+1:len;
 			gs_UIState.charInput = 0;
 			textChanged = 1;
 		}
